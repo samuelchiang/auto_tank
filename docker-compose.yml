@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+    mqtt:
+        image: eclipse-mosquitto
+        ports:
+            - 1883:1883
+        deploy:
+            replicas: 1
+        networks:
+          - net1
+        volumes:
+          - ./mosquitto/config:/mosquitto/config/
+    nodered:
+        image: nodered/node-red:latest
+        ports:
+            - 1880:1880
+        environment:
+            - TZ=Asia/Taipei
+        deploy:
+            replicas: 1
+        networks:
+          - net1
+        volumes:
+          - node-red-data:/data
+    influxdb:
+        image: influxdb
+        ports:
+            - 8086:8086
+        deploy:
+            replicas: 1
+        networks:
+          - net1
+        volumes:
+          - influxdb:/var/lib/influxdb
+          - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    grafana:
+        image: grafana/grafana
+        ports:
+            - 3000:3000
+        deploy:
+            replicas: 1
+        networks:
+          - net1
+        volumes:
+          - grafana-storage:/var/lib/grafana
+networks:
+    net1:
+volumes:
+    influxdb:
+    grafana-storage:
+    node-red-data:
