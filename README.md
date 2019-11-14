@@ -3,15 +3,14 @@ IoT Cloud Solution for Reef Tank Data Monitoring and Remote Control
 
 ## Overview
 
-Use a ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sensor to publish sensor data through MQTT. The MQTT broker is hosted on cloud. Using a Node-RED to subscribe the MQTT sensor data and store to InfluxDB. Grafana is used to show the historical sensor data, and set alert conditions for the value worthing notification. You can also ask Siri to report the last status of your reef tank.
-
+Use an ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sensor to publish sensor data through MQTT. The MQTT broker is hosted on the cloud. Using a Node-RED to subscribe to the MQTT sensor data and store to InfluxDB. Grafana is used to show the historical sensor data and set alert conditions for the value worthing notification. You can also ask Siri to report the last status of your reef tank.
 ![arch](./docs/arch/architect.png)
 
 ## Features
 
-- Monitor historical pH value of your reef tank, including the two point calibration
+- Monitor historical pH value of your reef tank, including the two-point calibration
 - Monitor historical temperature of your reef tank
-- Get the status of tank by Siri
+- Get the status of my tank by Siri
 - Get alert notification by Slack
 - Low cost
 - Private Cloud Solution
@@ -27,33 +26,33 @@ Use a ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sens
 	1. DS18B20 waterproof temperature sensor
 	1. Breadboard
 	1. Breadboard connectors
-	1. Micro usb cable and power adapter
+	1. Micro USB cable and power adapter
 
 * Cloud Side
-	1. A server (CPU:1 Core, 1GB RAM at least)
-	1. Public IP (If private ip, you can only access inside the local network. Use port forward to access on internet)
-	1. [Install Docker Engine](https://docs.docker.com/install/) on the server
-	1. [Install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to get the source code on github
+    1. A server (CPU:1 Core, 1GB RAM at least)
+    1. Public IP (If private IP, you can only access inside the local network. Use port forward to access on the internet)
+    1. [Install Docker Engine](https://docs.docker.com/install/) on the server
+    1. [Install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to get the source code on Github
 
 * For example, my cloud settings are as follows:
-	1. Apply an AWS EC2 VM
-	    1. Choose Ubuntu 16.04 t2.micro
-	    2. Create Security Group. Add Rule for TCP, Source: Anywhere, with
-	        1. MQTT:1883
-	        2. NodeRed:1880
-	        3. Grafana:3000
-	        4. InfluxDB:8086
-	    3. Instances > Actions > Networking > Change Security Groups.
-	2. Install Docker ```./bin/system/install_docker.sh```
-	3. Add Port in iptable ```./bin/system/add_port.sh ```
-	4. Save iptables ```./bin/system/save_iptables.sh```
+    1. Apply an AWS EC2 VM
+        1. Choose Ubuntu 16.04 t2.micro
+        2. Create a Security Group. Add Rule for TCP, Source: Anywhere, with
+            1. MQTT:1883
+            2. NodeRed:1880
+            3. Grafana:3000
+            4. InfluxDB:8086
+        3. Instances > Actions > Networking > Change Security Groups.
+    2. Install Docker ```./bin/system/install_docker.sh```
+    3. Add Port in iptable ```./bin/system/add_port.sh ```
+    4. Save iptables ```./bin/system/save_iptables.sh```
 
 ### Installing
 
 1. Get the source code on server `git clone https://github.com/samuelchiang/auto_tank.git`
 1. docker swarm init `docker swarm init`
 1. Start server  `./start.sh `
-1. Check 4 service are running (REPLICAS are all 1/1)
+1. Check 4 services are running (REPLICAS are all 1/1)
 
 	```
 	# docker service ls
@@ -105,7 +104,7 @@ Use a ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sens
 ### Setup Node-RED
 
 1. Browse Node-RED
-	1. Using browser to open ```http://<server ip>:1880/```, default username, password is admin:admin
+	1. Using a browser to open ```http://<server ip>:1880/```, default username, password is admin:admin
 	1. (Optional) You can [change Node-RED password](https://nodered.org/docs/user-guide/runtime/securing-node-red)
 1. Import Flows from file
 	1. Find `flows.json` in project path `node-red/data/`
@@ -121,7 +120,7 @@ Use a ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sens
 ### Setup Grafana
 
 1. Browse Grafana
-	1. Using browser to open ```http://<server ip>:3000/```, default username, password is admin:admin, the web UI will ask you to change the password.
+	1. Using a browser to open ```http://<server ip>:3000/```, default username, password is admin:admin, the web UI will ask you to change the password.
 1. Configure Data Source
 	1. On "Home Dashboard", Add data source > InfluxDB
 		1.  URL: `http://influxdb:8086`
@@ -138,8 +137,8 @@ Use a ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sens
 
 1. [Install Arduino driver for your PC or Mac](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
 1. [Use Arduino IDE for ESP8266](https://randomnerdtutorials.com/how-to-install-esp8266-board-arduino-ide/)
-1. Connect ESP8266, DS18B20 and pH meter with breadboard, the pin is shown as the architecture picture on overview section.
-1. Configure programe `PH_Meter`
+1. Connect ESP8266, DS18B20 and pH meter with a breadboard, the pin is shown as the architecture picture on the overview section.
+1. Configure program `PH_Meter`
 	1. Find Arduino file `ph_meter.ino` on project path `arduino/PH_Meter/`
 	1. Use Arduino IDE to open file: `ph_meter.ino`
 	1. Edit the parameters:
@@ -177,16 +176,16 @@ Use a ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sens
 	```	
 
 2.  Calibration procedure:
-	1. The pH probe is first washed with ordinary cold water, then blotted with tissue paper (do not use rough toilet paper), do not rotate it, otherwise it will permanently damage the probe coating, seriously affecting the accuracy!
+	1. The pH probe is first washed with ordinary cold water, then blotted with tissue paper (do not use rough toilet paper), do not rotate it, otherwise, it will permanently damage the probe coating, seriously affecting the accuracy!
 	2. Browse Node-RED > PH Calibration tab
-	3. Put the probe into the pH7 calibration solution and wait at least 1.5cm for 20 seconds, then click the box on the left side of cmd_ph7cal. After 10 Second, the average value V1 will be automatically obtained.
-	4. Put the probe into the pH10 calibration solution and wait at least 1.5cm for 20 seconds. Then click the box on the left side of cmd_ph10cal. 10 Second automatically obtains the average value V2, which is done.
+	3. Put the probe into the pH7 calibration solution and wait at least 1.5cm for 20 seconds, then click the box on the left side of cmd_ph7cal. After 10 seconds, the average value V1 will be automatically obtained.
+	4. Put the probe into the pH10 calibration solution and wait at least 1.5cm for 20 seconds. Then click the box on the left side of cmd_ph10cal. After 10 seconds, the average value V2 will be automatically obtained, which the calibration is done.
 	5. The calibration order of pH7 and pH10 cannot be reversed. The two calibrations must be completed at one time, otherwise please restart ESP8266.
-	6. The Calibration result can be seen by the Node-RED debug message, with MQTT topic 'event/dev1' , in my case
+	6. The Calibration result can be seen by the Node-RED debug message, with MQTT topic 'event/dev1', in my case
 	```
 	{ "id":"dev1", "ts":"20:41:36", "voltage7":593.32, "voltage10":1008.61, "ph_slope":"0.007247947", "ph_offset":"2.699647957”}
 	```
-	7. The data can also be seen by the Node-RED debug message, with MQTT topic 'data/dev1' , in my case
+	7. The data can also be seen by the Node-RED debug message, with MQTT topic 'data/dev1', in my case
         ```
         { "id":"dev1", "temp":23.75, "ph":8.36, "voltage":781.42}
         ```
@@ -194,10 +193,10 @@ Use a ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sens
 ### Setup Siri Shortcut to get the status of tank
 
 1. Use iPhone to install [Shortcut](https://apps.apple.com/app/shortcuts/id915249334) App
-2. Use browser to open the [Shortcut link](https://www.icloud.com/shortcuts/cae18371554d4cdc8b5840c3817709d2), install it in your shortcut app.
+2. Use a browser to open the [Shortcut link](https://www.icloud.com/shortcuts/cae18371554d4cdc8b5840c3817709d2), install it in your shortcut app.
 3. This app will ask for input server_ip, influxdb_username, and influxdb_password, fill them.
 4. Press play button to execute
-5. Press setting button, "Add to Siri". Then you can get the tank status by Siri voice command.
+5. Press the setting button, "Add to Siri". Then you can get the tank status by Siri voice command.
 
 
 ### Setup Slack to get the alert notification
