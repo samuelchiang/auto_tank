@@ -31,11 +31,6 @@ int RELAYpins[8] = {32, 33, 25, 26, 27, 14, 4, 13};
 //GPIO 32, 33, 25, 26, 27, 14, 4, 13
 //for switch 1,2,3,4,5,6,7,8
 
-// This device info
-#define DEVICE_HOSTNAME "esp32_relaybox"
-#define APP_NAME "my-app_2"
-// A UDP instance to let us send and receive packets over UDP
-WiFiUDP udpClient;
 
 //callback notifying us of the need to save config
 void saveConfigCallback () {
