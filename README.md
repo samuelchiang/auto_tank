@@ -91,6 +91,9 @@ Use an ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sen
 	Connected to http://localhost:8086 version 1.7.8
 	InfluxDB shell version: 1.7.8
 	> CREATE USER admin WITH PASSWORD 'your password' WITH ALL PRIVILEGES
+	> auth
+	username: admin
+	password: 
 	> CREATE DATABASE "mytank"
 	> show databases
 	name: databases
