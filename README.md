@@ -101,6 +101,7 @@ Use an ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sen
 	----
 	_internal
 	mytank
+	> CREATE RETENTION POLICY "a_year" ON "mytank" DURATION 52w REPLICATION 1 DEFAULT
 	> exit
 	```
 
