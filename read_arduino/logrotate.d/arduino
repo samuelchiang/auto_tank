@@ -1,0 +1,8 @@
+/var/log/arduino.log {
+        rotate 7
+        daily
+        missingok
+        notifempty
+        delaycompress
+        compress
+}
