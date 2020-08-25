@@ -31,7 +31,7 @@ Use an ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sen
 * Cloud Side
     1. A server (CPU:1 Core, 1GB RAM at least)
     1. Public IP (If private IP, you can only access inside the local network. Use port forward to access on the internet)
-    1. [Install Docker Engine](https://docs.docker.com/install/) on the server
+    1. [Install Docker Engine](https://docs.docker.com/install/) on the server, include [log rotation setting](https://docs.docker.com/config/containers/logging/configure/).
     1. [Install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to get the source code on Github
 
 * For example, my cloud settings are as follows:
@@ -101,6 +101,7 @@ Use an ESP8266 Wifi board (Arduino compatible) with pH meter and temperature sen
 	----
 	_internal
 	mytank
+	> CREATE RETENTION POLICY "a_year" ON "mytank" DURATION 52w REPLICATION 1 DEFAULT
 	> exit
 	```
 
